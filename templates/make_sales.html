@@ -1,0 +1,878 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <meta charset="utf-8" xmlns="http://www.w3.org/1999/html">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>{{APP_NAME}}</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{url_for('static', filename='assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='assets/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='assets/vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='assets/vendor/quill/quill.snow.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='assets/vendor/quill/quill.bubble.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='assets/vendor/remixicon/remixicon.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='assets/vendor/simple-datatables/style.css')}}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{{url_for('static', filename='assets/css/style.css')}}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Updated: May 30 2023 with Bootstrap v5.3.0
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+  <style>
+    thead th {
+        background-color: #ADD8E6; /* Your desired color code */
+        color: ; /* Text color */
+        padding: 10px; /* Padding for cell content */
+    }
+     select option.form-select {
+        font-size: 30px; /
+    }
+    /* Style for the remove button */
+    .remove-button {
+    background-color: #f44336; /* Red background color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    padding: 8px 12px; /* Padding around the text */
+    cursor: pointer; /* Show pointer cursor on hover */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s ease-in-out; /* Smooth color transition */
+    }
+
+    /* Change background color on hover */
+    .remove-button:hover {
+        background-color: #d32f2f; /* Darker red on hover */
+    }
+  </style>
+
+
+
+   <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="{{url_for('static', filename='assets/img/favicon.ico')}}" alt="">
+        <span class="d-none d-lg-block">{{APP_NAME}}</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+
+           <li class="nav-item dropdown pe-3">
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="{{url_for('static', filename='assets/img/profile-img.jpg')}}" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">ADMIN</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>{{current_user.username}}</h6>
+              <span>ADMIN</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{{url_for('logout')}}">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="{{url_for('home')}}">
+          <i class="bi bi-grid"></i>
+          <span>ADMIN</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Products</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{{url_for('add_new_product')}}">
+              <i class="bi bi-circle"></i><span>New Product</span>
+            </a>
+          </li>
+            <li>
+            <a href="{{url_for('add_stock')}}">
+              <i class="bi bi-circle"></i><span>Add Stock</span>
+            </a>
+          </li>
+            <li>
+            <a href="{{url_for('adjust_price')}}">
+              <i class="bi bi-circle"></i><span>Adjust Price</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{url_for('view_products')}}">
+              <i class="bi bi-circle"></i><span>View Products</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Forms Nav -->
+
+
+
+     <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>PO/Bills</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{{url_for('make_sales')}}">
+              <i class="bi bi-circle"></i><span>Make Sales</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{url_for('view_sales')}}">
+              <i class="bi bi-circle"></i><span>View Sales|Today</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{url_for('previous_sales')}}">
+              <i class="bi bi-circle"></i><span>View Previous Sales</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{url_for('regenerate_receipt')}}">
+              <i class="bi bi-circle"></i><span>Sales Record</span>
+            </a>
+          </li>
+        </ul>
+     </li>
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Stock</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <li>
+            <a href="{{url_for('view_stock')}}">
+              <i class="bi bi-circle"></i><span>View Available Stock</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{url_for('stock_manager')}}">
+              <i class="bi bi-circle"></i><span>Stock Manager</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+
+<!--      <li class="nav-item">-->
+<!--        <a class="nav-link collapsed" data-bs-target="#component-nav" data-bs-toggle="collapse" href="#">-->
+<!--          <i class="bi bi-menu-button-wide"></i><span>Users</span><i class="bi bi-chevron-down ms-auto"></i>-->
+<!--        </a>-->
+<!--        <ul id="component-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">-->
+<!--          <li>-->
+<!--            <a href="{{url_for('create_user')}}">-->
+<!--              <i class="bi bi-circle"></i><span>Create New User</span>-->
+<!--            </a>-->
+<!--          </li>-->
+<!--          <li>-->
+<!--            <a href="{{url_for('view_users')}}">-->
+<!--              <i class="bi bi-circle"></i><span>View Users</span>-->
+<!--            </a>-->
+<!--          </li>-->
+<!--            <li>-->
+<!--            <a href="{{url_for('user_sales_act')}}">-->
+<!--              <i class="bi bi-circle"></i><span>Sales Activities</span>-->
+<!--            </a>-->
+<!--          </li>-->
+<!--            <li>-->
+<!--            <a href="{{url_for('sales_rep_proceeds')}}">-->
+<!--              <i class="bi bi-circle"></i><span>Proceeds|Today</span>-->
+<!--            </a>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </li>-->
+
+
+
+        <li class="nav-item">
+        <a class="nav-link collapsed" href="{{url_for('logout')}}">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Logout</span>
+        </a>
+      </li><!-- End Login Page Nav -->
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{url_for('home')}}">Home</a></li>
+          <li class="breadcrumb-item active">Admin</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+      {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                {% for message in messages %}
+                  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">POINT OF SALES</h5>
+
+
+              <!-- Browser Default Validation -->
+              <form class="row g-3" action="{{url_for('generate_invoice')}}" method="POST" name="">
+                <div class="col-sm-10">
+                  <input type="hidden" name="date" class="form-control" value="{{date_day}}" id="datetime">
+                </div>
+                <div class="col-sm-10">
+                  <input type="hidden" name="bill_no" class="form-control" value="{{id_no}}" id="ref">
+                </div>
+<!--                <div class="col-md-4">-->
+<!--                  <label for="validationDefault01" class="form-label">Customer Name</label>-->
+<!--                  <input type="text" class="form-control" id="validationDefault01" value="" required>-->
+<!--                </div>-->
+<!--                <div class="col-md-4">-->
+<!--                  <label for="validationDefault02" class="form-label">Mobile No</label>-->
+<!--                  <input type="text" class="form-control" id="validationDefault02" value="" required>-->
+<!--                </div>-->
+                <div class="col-md-10">
+                  <label for="filterInput" class="form-label">Product</label>
+                  <input type="text" name="product" class="form-control" id="filterInput" oninput="filterOptions()" placeholder="Search for name..">
+                </div>
+                <div class="col-md-4">
+                  <label for="selectMenu" class="form-label">Choose</label>
+                  <select class="form-select" name="pro" id="selectMenu" size="2" onchange="postSelectedOption()">
+                    <option selected></option>
+                {% for item in products %}
+                    <option class="form-select" value="{{item}}">{{item}}</option>
+                {% endfor %}
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label for="selectedItemInput" class="form-label">Price</label>
+                  <input type="text" name="price" class="form-control"  id="selectedItemInput">
+                </div>
+               <div class="col-md-3">
+                  <label for="validationDefault06" class="form-label">Qty</label>
+                  <input type="number" class="form-control" id="validationDefault06" name="qty">
+                </div>
+                 <div class="col-12">
+                  <button class="btn btn-primary" type="button" id="appendButton" onclick="appendToTable()">Append</button>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <table id="myTable">
+                    <thead>
+                        <tr>
+                            <th>Qty</th>
+                            <th>Item(s)</th>
+                            <th>Price</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Existing table rows will go here -->
+                    </tbody>
+                </table>
+
+
+                <div class="col-md-4">
+                  <label for="selectMethod" class="form-label">Method Of Payment</label>
+                  <select class="form-select1" name="pro" id="selectMethod">
+                    <option selected></option>
+                    <option class="form-select1" value="Cash">Cash</option>
+                    <option class="form-select1" value="Transfer">Transfer</option>
+                    <option class="form-select1" value="Split Payment">Split Payment</option>
+                  </select>
+                </div>
+
+                  <div class="col-md-3" id="amountInCashContainer" style="display: none;">
+                      <label for="amountInCash" class="form-label">Amount In Cash</label>
+                      <input type="text" class="form-control" id="amountInCash" name="amount_in_cash">
+                  </div>
+
+                  <div class="col-md-3" id="amountInTransferContainer" style="display: none;">
+                      <label for="amountInTransfer" class="form-label">Amount In Transfer</label>
+                      <input type="text" class="form-control" id="amountInTransfer" name="amount_in_transfer">
+                  </div>
+
+                <div class="col-md-3">
+                  <label for="amountPaid" class="form-label">Amount Paid</label>
+                  <input type="text" class="form-control" id="amountPaid" name="amount_paid" required>
+                </div>
+
+                <div class="col-md-3">
+                  <label for="change" class="form-label">Change</label>
+                  <input type="text" class="form-control" id="change" name="change" required>
+                </div>
+
+                 <div class="text-center">
+                  <button type="button" class="btn btn-primary"  onclick="pay()">Pay</button>
+                  <button type="submit" class="btn btn-secondary" >Generate Receipt</button>
+                </div>
+
+              </form>
+
+              <!-- End Sales Form -->
+            <script src="{{url_for('static', filename='assets/vendor/sweetalert/sweetalert.min.js')}}"></script>
+
+           <script>
+                // Get references to the input fields
+                const amountInCashInput = document.getElementById('amountInCash');
+                const amountInTransferInput = document.getElementById('amountInTransfer');
+                const amountPaidInput = document.getElementById('amountPaid');
+
+                // Add input event listeners to both amountInCash and amountInTransfer inputs
+                amountInCashInput.addEventListener('input', updateAmountPaid);
+                amountInTransferInput.addEventListener('input', updateAmountPaid);
+
+                function updateAmountPaid() {
+                // Parse the values of the input fields as floats (or integers, depending on your use case)
+                const amountInCash = parseFloat(amountInCashInput.value) || 0;
+                const amountInTransfer = parseFloat(amountInTransferInput.value) || 0;
+
+                // Calculate the sum
+                const sum = amountInCash + amountInTransfer;
+
+                // Update the amountPaid input field with the sum
+                amountPaidInput.value = sum.toFixed(2); // Display the sum with two decimal places
+            }
+           </script>
+
+
+
+            <script>
+                // Get references to the elements
+                var selectMethod = document.getElementById("selectMethod");
+                var amountInCashContainer = document.getElementById("amountInCashContainer");
+                var amountInTransferContainer = document.getElementById("amountInTransferContainer");
+
+                // Add event listener to the select element
+                selectMethod.addEventListener("change", function () {
+                  var selectedOption = selectMethod.value;
+
+                  // Show/hide the appropriate input fields based on the selected option
+                  if (selectedOption === "Split Payment") {
+                    amountInCashContainer.style.display = "block";
+                    amountInTransferContainer.style.display = "block";
+                  } else {
+                    amountInCashContainer.style.display = "none";
+                    amountInTransferContainer.style.display = "none";
+                  }
+                });
+            </script>
+
+
+
+              <script>
+                  function filterOptions() {
+                      const input = document.getElementById('filterInput').value;
+                      fetch('/filtered_options', {
+                          method: 'POST',
+                          headers: {
+                              'Content-Type': 'application/x-www-form-urlencoded',
+                          },
+                          body: `input_text=${input}`,
+                      })
+                      .then(response => response.json())
+                      .then(data => {
+                          const selectMenu = document.getElementById('selectMenu');
+                          selectMenu.innerHTML = '<option value=""></option>';
+                          for (const option of data.filtered_options) {
+                              selectMenu.innerHTML += `<option value="${option}">${option}</option>`;
+                          }
+                      });
+                  }
+              </script>
+
+
+<!--                <script>-->
+<!--                    function showOption() {-->
+<!--                      var select = document.getElementById("selectMenu");-->
+<!--                      var input = document.getElementById("filterInput");-->
+<!--                      input.value = select.options[select.selectedIndex].text;-->
+<!--                    }-->
+<!--                </script>-->
+
+
+
+              <script>
+                function postSelectedOption() {
+                console.log("Function postSelectedOption called.");
+                var select = document.getElementById("selectMenu");
+                var input = document.getElementById("filterInput");
+                input.value = select.options[select.selectedIndex].text;
+                const selectElement = document.getElementById("selectMenu");
+                const selectedValue = selectElement.value;
+                const dataToSend = { pro: selectedValue };
+
+              fetch('{{INTERNAL_URL}}/make_sales', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataToSend)
+              })
+                .then(response => response.json())
+                .then(data => {
+                  var input = document.getElementById("selectedItemInput");
+                   input.value = data.toFixed(2);
+                  console.log(data);
+                })
+                .catch(error => {
+                  console.error('Error:', error);
+                });
+              }
+              </script>
+
+             <script>
+                function postItemsForSale() {
+                var refNo = document.getElementById("ref").value;
+                var product = document.getElementById("filterInput").value;
+                var price = document.getElementById("selectedItemInput").value;
+                var quantity = document.getElementById("validationDefault06").value;
+                var amount = price * quantity
+                var ojo = document.getElementById("datetime").value;
+                var dataToSend = { bill: refNo, pro: product, pricy: price, qty: quantity, sub_total: amount.toFixed(2), date: ojo  };
+<!--                console.log(dataToSend)-->
+
+                fetch('{{INTERNAL_URL}}/item_for_sale', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataToSend)
+              })
+              }
+             </script>
+
+<!--            <script>-->
+<!--                function postItemsForRemoval() {-->
+<!--                var refNo = document.getElementById("ref").value;-->
+<!--                var productCell = row.cells[1];-->
+<!--                var priceCell = row.cells[2];;-->
+<!--                var quantityCell = row.cells[0];;-->
+<!--                var amountCell = row.cells[3];-->
+<!--                var ojo = document.getElementById("datetime").value;-->
+<!--                var product = productCell.textContent;-->
+<!--                var price = parseFloat(priceCell.textContent).toFixed(2);-->
+<!--                var quantity = quantityCell.textContent;-->
+<!--                var amount = parseFloat(amountCell.textContent).toFixed(2);-->
+<!--                var dataToSend = { bill: refNo, pro: product, pricy: price, qty: quantity, sub_total: amount.toFixed(2), date: ojo  };-->
+<!--                console.log(dataToSend)-->
+
+<!--                fetch('{{INTERNAL_URL}}/item_for_removal', {-->
+<!--                method: 'POST',-->
+<!--                headers: {-->
+<!--                  'Content-Type': 'application/json'-->
+<!--                },-->
+<!--                body: JSON.stringify(dataToSend)-->
+<!--              })-->
+<!--              }-->
+<!--            </script>-->
+
+
+
+              <script>
+                var totalSum = 0;
+                function updateTotalSum(amount) {
+                    if (!isNaN(amount)) {
+                        totalSum += amount;
+                        overallTotalCells[3].textContent = totalSum.toFixed(2);
+                         overallTotalCells[3].style.backgroundColor = "#ADD8E6";
+                    }
+                }
+              </script>
+
+
+              <script>
+                  var tableBody = document.getElementById("myTable").getElementsByTagName('tbody')[0];
+                  var overallTotalRow = tableBody.insertRow(tableBody.rows.length);
+                  var overallTotalCells = [];
+
+                  for (var i = 0; i < 4; i++) {
+                      var cell = overallTotalRow.insertCell(i);
+                      overallTotalCells.push(cell);
+                  }
+
+                  overallTotalCells[2].textContent = "Overall Total:";
+
+                  overallTotalCells[2].style.backgroundColor = "#ADD8E6";
+              </script>
+
+
+
+              <script>
+                    function appendToTable() {
+                    postItemsForSale()
+                    var qty = document.getElementById("validationDefault06");
+                    var product = document.getElementById("filterInput");
+                    var price = document.getElementById("selectedItemInput");
+
+                    // Check if the product value is not empty or only whitespace
+                    if (product.value.trim() === "") {
+                        swal("Please enter product name !", "DigitsInfotech");
+<!--                        alert("Please enter product name.");-->
+                        return; // Stop execution if product is empty
+                    }
+                    // Check if the price value is not empty or only whitespace
+                    if (price.value.trim() === "") {
+                        swal("Please enter price !", "DigitsInfotech");
+                        return; // Stop execution if price is empty
+                    }
+                    // Check if the qty value is not empty or only whitespace
+                    if (qty.value.trim() === "") {
+                        swal("Please enter a valid quantity !", "DigitsInfotech");
+                        return; // Stop execution if qty is empty
+                    }
+
+                    var tableBody = document.getElementById("myTable").getElementsByTagName('tbody')[0];
+                    var amount = parseFloat(qty.value) * parseFloat(price.value);
+
+                    var newRow = tableBody.insertRow(tableBody.rows.length);
+                    var qtyCell = newRow.insertCell(0);
+                    var productCell = newRow.insertCell(1);
+                    var priceCell = newRow.insertCell(2);
+                    var amountCell = newRow.insertCell(3);
+
+                    qtyCell.innerHTML = qty.value;
+                    productCell.innerHTML = product.value;
+                    priceCell.innerHTML = price.value;
+                    amountCell.innerHTML = amount.toFixed(2);
+
+                    var removeCell = newRow.insertCell(4);
+                    var removeButton = document.createElement("button");
+                    removeButton.textContent = "Remove";
+                    removeButton.className = "remove-button"; // Add the CSS class
+                    removeButton.addEventListener("click", function() {
+                        removeRow(newRow);
+                    });
+                    removeCell.appendChild(removeButton);
+
+                    // Call updateTotalSum to update the overall total
+
+
+                    updateTotalSum(amount)
+
+                    // Move the 'Overall Total' row to the bottom of the table body
+                    tableBody.appendChild(overallTotalRow);
+
+
+                    // Clear input fields after appending
+                    qty.value = "";
+                    product.value = "";
+                    price.value = "";
+
+
+                }
+              </script>
+
+<!--              <script>-->
+<!--                function removeRow(row) {-->
+<!--                tableBody.removeChild(row);-->
+<!--                var amountCell = row.cells[3];-->
+<!--                var totalSum = overallTotalCells[3].textContent-->
+<!--                console.log(totalSum)-->
+<!--                var amountToRemove = parseFloat(amountCell.textContent).toFixed(2);-->
+<!--                console.log(amountToRemove)-->
+
+<!--                if (!isNaN(amountToRemove)) {-->
+<!--                        totalSum -= amountToRemove;-->
+<!--                        overallTotalCells[3].textContent = totalSum.toFixed(2);-->
+<!--                  }-->
+<!--                }-->
+<!--              </script>-->
+
+
+
+                <script>
+                  function removeRow(row) {
+                    var refNo = document.getElementById("ref").value;
+                    var ojo = document.getElementById("datetime").value;
+                    var productCell = row.cells[1];
+                    var priceCell = row.cells[2];
+                    var quantityCell = row.cells[0];
+                    var amountCell = row.cells[3];
+
+                    var product = productCell.textContent;
+                    var price = parseFloat(priceCell.textContent).toFixed(2);
+                    var quantity = quantityCell.textContent;
+                    var amount = parseFloat(amountCell.textContent).toFixed(2);
+
+                    var dataToSend = {
+                      bill: refNo,
+                      pro: product,
+                      pricy: price,
+                      qty: quantity,
+                      sub_total: amount,
+                      date: ojo
+                    };
+
+<!--                    console.log(dataToSend);-->
+
+                    // Call the postItemsForRemoval function to perform the POST request
+                    postItemsForRemoval(dataToSend);
+
+                    // Remove the row from the table and update the total sum
+                    tableBody.removeChild(row);
+                    var totalSum = overallTotalCells[3].textContent;
+                    var amountToRemove = parseFloat(amount);
+
+                    if (!isNaN(amountToRemove)) {
+                      totalSum -= amountToRemove;
+                      overallTotalCells[3].textContent = totalSum.toFixed(2);
+                    }
+                  }
+
+                  function postItemsForRemoval(dataToSend) {
+                    fetch('{{INTERNAL_URL}}/item_for_removal', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify(dataToSend)
+                    });
+                  }
+                </script>
+
+
+                <script>
+                   function disableFormElements() {
+                    const formElements = [
+                        "selectMenu",
+                        "filterInput",
+                        "selectedItemInput",
+                        "validationDefault06",
+                        "appendButton",
+                        "selectMethod",
+                        "amountInCash",
+                        "amountInTransfer",
+                        "amountPaid",
+                        "change",
+                        ".btn-primary"
+                    ];
+
+                        formElements.forEach(element => {
+                            if (element.startsWith(".")) {
+                                // Handle class selector
+                                document.querySelector(element).disabled = true;
+                            } else {
+                                // Handle element by ID
+                                document.getElementById(element).disabled = true;
+                            }
+                        });
+
+                        document.querySelector(".btn-secondary").disabled = false;
+                    }
+
+                </script>
+
+
+
+                <script>
+                    function disableRemoveButtons() {
+                    const removeButtons = document.querySelectorAll(".remove-button");
+                    removeButtons.forEach(button => {
+                        button.disabled = true;
+                    });
+                  }
+                </script>
+
+
+
+                <script>
+                  function pay() {
+                    var refNo = document.getElementById("ref").value;
+                    var ojo = document.getElementById("datetime").value;
+                    var amountPaidInput = document.getElementById("amountPaid");
+                    var amountPaid = parseFloat(amountPaidInput.value);
+                    var overallTotal = parseFloat(overallTotalCells[3].textContent);
+
+                    if (isNaN(amountPaid)) {
+                      swal("Please enter a valid amount !", "DigitsInfotech");
+                      return;
+                    }
+
+                    if (amountPaid < overallTotal) {
+                      swal("Amount paid is not sufficient !", "DigitsInfotech");
+                      return;
+                    } else {
+                      var changes = amountPaid - overallTotal;
+                      var change = document.getElementById("change");
+                      change.value = changes
+
+                      }
+
+                    var selectMethod = document.getElementById("selectMethod").value;
+                    var amountInCashInput = document.getElementById("amountInCash");
+                    var amountInTransferInput = document.getElementById("amountInTransfer");
+
+                    var dataToSend = {
+                      bill: refNo,
+                      date: ojo,
+                      total: overallTotal,
+                      method_of_pay: selectMethod,
+                      amountPaid: amountPaid
+                    };
+
+                    if (selectMethod === "Split Payment") {
+                      var amountInCash = parseFloat(amountInCashInput.value);
+                      var amountInTransfer = parseFloat(amountInTransferInput.value);
+
+                      if (isNaN(amountInCash) || isNaN(amountInTransfer)) {
+                        swal("Please enter valid amounts for split payment !", "DigitsInfotech");
+                        return;
+                      }
+
+                      dataToSend.cash = amountInCash;
+                      dataToSend.transfer = amountInTransfer;
+                    }
+
+                    fetch('{{INTERNAL_URL}}/make_payment', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify(dataToSend)
+                    });
+                     swal("Payment Successful. Pls generate Invoice or reload the page !", "DigitsInfotech");
+<!--                     disableFormElements();-->
+<!--                     disableRemoveButtons();-->
+<!--                     document.getElementById("selectMenu").disabled = true;-->
+<!--                     document.getElementById("filterInput").disabled = true;-->
+<!--                     document.getElementById("selectedItemInput").disabled = true;-->
+<!--                     document.getElementById("validationDefault06").disabled = true;-->
+<!--                     document.getElementById("appendButton").disabled = true;-->
+<!--                     document.getElementById("selectMethod").disabled = true;-->
+<!--                     document.getElementById("amountInCash").disabled = true;-->
+<!--                     document.getElementById("amountInTransfer").disabled = true;-->
+<!--                     document.getElementById("amountPaid").disabled = true;-->
+<!--                     document.getElementById("change").disabled = true;-->
+<!--                     document.querySelector(".btn-primary").disabled = true;-->
+<!--                     document.querySelector(".btn-secondary").disabled = false;-->
+<!--                     const removeButtons = document.querySelectorAll(".remove-button");-->
+<!--                        removeButtons.forEach(button => {-->
+<!--                            button.disabled = true;-->
+<!--                       });-->
+<!--                     location.reload();-->
+                  }
+                </script>
+
+
+
+            </div>
+          </div>
+
+        </div>
+
+
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>{{APP_NAME}}</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      Designed by <a href="https://digitsinfotech-website.vercel.app/" target="_blank">DigitsInfotech</a>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{{url_for('static', filename='assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
+  <script src="{{url_for('static', filename='assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{url_for('static', filename='assets/vendor/chart.js/chart.umd.js')}}"></script>
+  <script src="{{url_for('static', filename='assets/vendor/echarts/echarts.min.js')}}"></script>
+  <script src="{{url_for('static', filename='assets/vendor/quill/quill.min.js')}}"></script>
+  <script src="{{url_for('static', filename='assets/vendor/simple-datatables/simple-datatables.js')}}"></script>
+  <script src="{{url_for('static', filename='assets/vendor/tinymce/tinymce.min.js')}}"></script>
+  <script src="{{url_for('static', filename='assets/vendor/php-email-form/validate.js')}}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{{url_for('static', filename='assets/js/main.js')}}"></script>
+
+{% endblock %}
+
+
+
+
+

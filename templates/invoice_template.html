@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice</title>
+    <style>
+    @media print {
+            #printButton {
+                display: none;
+            }
+        }
+    table{
+        border-collapse: collapse;
+    }
+    td, th {
+       border: 1px solid black;
+       font-size: 13px;
+    }
+
+
+  </style>
+</head>
+<body>
+
+    <h4>{{APP_NAME}}</h4>
+     <p style="font-size: 13px">12 Eleweran Rd, Aregbe, Abk<br>
+        &nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;Tel: 08127497918</p><br>
+
+    <p style="font-size: 18px">&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; INVOICE</p>
+    <p style="font-size: 13px">CUSTOMER NAME: CUSTOMER<br>
+    REF NO: {{ invoices[0]['invoice_number']}}<br>
+    DATE: {{ ojo}}</p><br>
+
+    <table>
+        <tr>
+            <th>Qty</th>
+            <th>Item(s)</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+        {% for item in invoices[0]['items'] %}
+        <tr>
+            <td>{{ item.qty }}</td>
+            <td>{{ item.item }}</td>
+            <td>{{ item.price | float }}</td>
+            <td>{{ item.price | float }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+
+         <p style="font-size: 13px">Total Amount:&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ amount['amount'] }}<br>
+        Payment Made:&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp; {{ amount_paid }}<br>
+        Change:&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{change}}<br><br>
+        Thanks for your patronage<br><br>
+             Note: Items bought in good<br> condition are not returnable</p><br>
+         <p style="font-size: 13px">Powered by: <b>DigitsInfotech</b><br>
+             &nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tel: 08127497918</p><br><br>
+
+
+    <button id="printButton">Print</button>
+
+    <script>
+        document.getElementById("printButton").addEventListener("click", function() {
+            window.print();
+            window.location.href = "{{url_for('make_sales')}}";
+<!--            document.getElementById("printButton").style.display = "none";-->
+<!--            setTimeout(function() {-->
+<!--            document.getElementById("printButton").style.display = "block";-->
+<!--        }, 100); // Adjust the delay as needed-->
+<!--    });-->
+        });
+    </script>
+</body>
+</html>

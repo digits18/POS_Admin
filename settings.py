@@ -1,0 +1,6 @@
+INTERNAL_URL = f"http://127.0.0.1:5000"
+API_URL = f"http://127.0.0.1:5004"
+USER_SERVER = f"http://127.0.0.1:5002"
+APP_NAME = "DIGITS SALES APP"
+ADDRESS = "12 Jovi House, Raji Rasaq Street, Akinola, Iyana Ipaja, Lagos"
+MOBILE = "08127497918"
